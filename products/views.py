@@ -1,9 +1,9 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from products.models import Product, UserProduct
-from products.serializers import ProductSerializer, UserProductSerializer
+from products.serializers import ProductSerializer, UserProductSerializer, \
+    UserProductWithProductSerializer
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -11,13 +11,20 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
 
 
-class UserProductList(APIView):
+class UserProductList(generics.ListCreateAPIView):
+    queryset = UserProduct.objects.all()
+    serializer_class = UserProductSerializer
 
-    def get(self, request):
-        user_products = UserProduct.objects.all()
-        # serializer = UserProductSerializer(user_products, many=True)
-        product = Product.objects.get(id=1)
-        print(product)
-        print(user_products.get('id'))
-        # print(serializer.data)
-        # return Response(serializer.data)
+    def get(self, request, *args, **kwargs):
+        products = UserProduct.objects.all().select_related()
+        serializer = UserProductWithProductSerializer(products, many=True)
+        return Response(serializer.data)
+
+
+class UserProductByDateList(generics.ListAPIView):
+    serializer_class = UserProductWithProductSerializer
+
+    def get_queryset(self):
+        date = self.kwargs['date']
+        queryset = UserProduct.objects.filter(date=date)
+        return queryset
