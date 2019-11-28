@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from rest_framework import viewsets, generics
 from rest_framework.response import Response
 
@@ -28,3 +30,16 @@ class UserProductByDateList(generics.ListAPIView):
         date = self.kwargs['date']
         queryset = UserProduct.objects.filter(date=date)
         return queryset
+
+    def list(self, request, *args, **kwargs):
+        products = self.get_queryset()
+        serialized_products = self.serializer_class(products, many=True).data
+
+        products_by_mealtime = defaultdict(list)
+
+        for product in serialized_products:
+            del product['date']
+            mealtime = product.pop('mealtime')
+            products_by_mealtime[mealtime].append(product)
+
+        return Response(products_by_mealtime)
