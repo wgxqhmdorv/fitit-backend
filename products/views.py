@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+from django.contrib.postgres.search import TrigramSimilarity
 from rest_framework import viewsets, generics
 from rest_framework.response import Response
 
@@ -11,6 +12,19 @@ from products.serializers import ProductSerializer, UserProductSerializer, \
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+
+# TODO: Try different methods of searching from:
+# https://docs.djangoproject.com/en/2.2/ref/contrib/postgres/search/
+class SearchProductView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        query = self.kwargs['product']
+        products = Product.objects.annotate(
+            similarity=TrigramSimilarity('name', query), ).filter(
+            similarity__gt=0.3).order_by('-similarity')
+        return products
 
 
 class UserProductList(generics.ListCreateAPIView):
