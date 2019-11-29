@@ -8,7 +8,7 @@ from products.serializers import ProductSerializer, UserProductSerializer, \
     UserProductWithProductSerializer
 
 
-class ProductViewSet(viewsets.ModelViewSet):
+class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
