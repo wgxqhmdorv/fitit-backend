@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='Product',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=60)),
+                ('name', models.CharField(max_length=200)),
                 ('calories', models.IntegerField()),
                 ('carbohydrates', models.IntegerField()),
                 ('proteins', models.IntegerField()),

@@ -3,7 +3,7 @@ from django.db import models
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=200)
     calories = models.IntegerField()
     carbohydrates = models.IntegerField()
     proteins = models.IntegerField()
