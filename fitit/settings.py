@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'rest_framework',
-    'products'
+    'rest_framework_simplejwt.token_blacklist',
+    'products',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -126,7 +128,10 @@ STATIC_URL = '/static/'
 # DJANGO REST FRAMEWORK SETTINGS
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 20
+    'PAGE_SIZE': 20,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTTokenUserAuthentication',
+    )
 }
 
 # HEROKU INITIALIZE
