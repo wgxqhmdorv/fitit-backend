@@ -26,6 +26,3 @@ class UserProduct(models.Model):
     mealtime = models.CharField(max_length=10, choices=mealtime_choices)
     date = models.DateField()
     weight = models.IntegerField()
-
-    class Meta:
-        unique_together = ('product', 'date', 'mealtime')
