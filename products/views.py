@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+from django.contrib.auth.models import User
 from django.contrib.postgres.search import TrigramSimilarity
 from rest_framework import viewsets, generics
 from rest_framework.response import Response
@@ -30,6 +31,10 @@ class SearchProductView(generics.ListAPIView):
 class UserProductList(generics.ListCreateAPIView):
     queryset = UserProduct.objects.all()
     serializer_class = UserProductSerializer
+
+    def perform_create(self, serializer):
+        user = User.objects.get(id=self.request.user.id)
+        serializer.save(user=user)
 
     def get(self, request, *args, **kwargs):
         products = UserProduct.objects.all().select_related()
