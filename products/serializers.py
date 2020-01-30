@@ -18,5 +18,5 @@ class UserProductSerializer(serializers.ModelSerializer):
 class UserProductWithProductSerializer(UserProductSerializer):
     product = ProductSerializer()
 
-    class Meta(UserProductSerializer.Meta):
-        exclude = ['user']
+    # class Meta(UserProductSerializer.Meta):
+    #     exclude = ['user']

@@ -37,7 +37,15 @@ class UserProductList(generics.ListCreateAPIView):
         serializer.save(user=user)
 
     def get(self, request, *args, **kwargs):
-        products = UserProduct.objects.all().select_related()
+        products = UserProduct.objects.all().filter(user=self.request.user.id).select_related()
+        print(self.request.user.id)
+        for product in products:
+            ratio = product.weight / 100
+            product.product.calories *= ratio
+            product.product.carbohydrates *= ratio
+            product.product.proteins *= ratio
+            product.product.fats *= ratio
+
         serializer = UserProductWithProductSerializer(products, many=True)
         return Response(serializer.data)
 
