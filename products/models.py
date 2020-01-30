@@ -15,10 +15,10 @@ class Product(models.Model):
 
 class UserProduct(models.Model):
     mealtime_choices = (
-        ('breakfast', 'Breakfast'),
-        ('lunch', 'Lunch'),
-        ('dinner', 'Dinner'),
-        ('supper', 'Supper')
+        ('Breakfast', 'Breakfast'),
+        ('Lunch', 'Lunch'),
+        ('Dinner', 'Dinner'),
+        ('Supper', 'Supper')
     )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
